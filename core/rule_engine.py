@@ -88,14 +88,39 @@ class RuleCoverageTracker:
             self.slot_values_tested[slot_name].add(value)
 
     def get_report(self) -> CoverageReport:
-        """获取覆盖报告"""
+        """获取覆盖报告
+
+        Returns:
+            CoverageReport: 包含 slot_coverage 和 boundary_coverage 的完整报告
+            - slot_coverage: 每个槽的覆盖百分比（基于唯一值数量）
+            - boundary_coverage: 边界测试覆盖度（Phase 1 暂时为 0.0）
+        """
+        # 计算 slot_coverage：每个槽的覆盖百分比
+        # 简化实现：基于评估次数和唯一值数量的启发式计算
+        slot_coverage = {}
+        for slot_name, evaluations in self.evaluations.items():
+            unique_count = len(self.slot_values_tested.get(slot_name, set()))
+            total_count = len(evaluations)
+            if total_count > 0:
+                # 覆盖度 = 唯一值数量 / 总评估次数（简化计算）
+                coverage = min(1.0, unique_count / max(1, total_count))
+            else:
+                coverage = 0.0
+            slot_coverage[slot_name] = coverage
+
+        # boundary_coverage: 边界测试覆盖度
+        # Phase 1 暂时返回 0.0，待后续实现边界值测试后计算
+        boundary_coverage = 0.0
+
         return CoverageReport(
             session_id=self.session_id,
             created_at=self.created_at,
             total_evaluations=sum(len(v) for v in self.evaluations.values()),
             unique_values_tested={
                 slot: len(values) for slot, values in self.slot_values_tested.items()
-            }
+            },
+            slot_coverage=slot_coverage,
+            boundary_coverage=boundary_coverage
         )
 
 
@@ -106,6 +131,12 @@ class RuleEngine:
     - 评估 Contract 规则
     - 生成覆盖统计
     - Session 级隔离
+
+    Phase 1 实现说明：
+    - 当前版本提供框架结构和数据流
+    - 实际规则解析和评估将在后续阶段实现（待 Contract DSL 解析完成后）
+    - 对于没有规则的槽，返回 passed=None（表示未评估）
+    - 对于空 Contract，overall_passed 返回 None（三值逻辑）
     """
 
     def __init__(self, contract: Contract, session_id: Optional[str] = None):
@@ -124,25 +155,40 @@ class RuleEngine:
                        execution_context: ExecutionContext) -> RuleEvaluationResult:
         """评估所有规则
 
+        Phase 1 实现：
+        - 遍历 Contract 中的所有槽
+        - 对于每个槽，如果没有规则定义，返回 passed=None
+        - 记录评估到 coverage_tracker
+        - 生成包含 false_sources 和 none_sources 的追踪信息
+
         Args:
             test_case: 测试用例
             execution_context: 执行上下文
 
         Returns:
-            RuleEvaluationResult: 评估结果，包含 trace
+            RuleEvaluationResult: 评估结果，包含 trace 和 coverage_report
         """
         results = []
-        false_sources = []
-        none_sources = []
+        false_sources = []  # 追踪导致 False 结果的规则来源
+        none_sources = []   # 追踪导致 None 结果的规则来源
 
         # 遍历所有槽
         for slot in self.contract.core_slots:
+            # Phase 1: 槽没有规则时，passed=None（表示未评估/无规则）
+            # 后续阶段将解析 slot.rules 并进行实际规则评估
             slot_result = SlotRuleResult(
                 slot_name=slot.slot_name,
-                results=[],
-                passed=None
+                results=[],  # Phase 1: 空，后续填充 SingleRuleResult
+                passed=None  # 无规则时为 None
             )
             results.append(slot_result)
+
+            # 记录到覆盖追踪器
+            slot_value = test_case.slot_values.get(slot.slot_name)
+            self.coverage_tracker.record_evaluation(slot.slot_name, slot_value, None)
+
+            # 追踪 None 来源
+            none_sources.append(f"slot:{slot.slot_name}")
 
         # 计算整体结果（三值逻辑）
         overall_passed = ThreeValuedLogic.compute_overall_passed([r.passed for r in results])

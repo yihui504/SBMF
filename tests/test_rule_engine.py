@@ -87,6 +87,12 @@ def test_rule_coverage_tracker():
     assert report.total_evaluations == 3
     assert report.unique_values_tested["top_k"] == 2  # 10 and 100
     assert report.unique_values_tested["dimension"] == 1  # 128
+    # Verify slot_coverage is populated
+    assert "slot_coverage" in report.__dataclass_fields__
+    assert isinstance(report.slot_coverage, dict)
+    # Verify boundary_coverage is populated (even if 0.0 for Phase 1)
+    assert hasattr(report, 'boundary_coverage')
+    assert report.boundary_coverage == 0.0
 
 def test_rule_coverage_tracker_auto_session_id():
     """Test auto-generated session ID"""
@@ -109,3 +115,88 @@ def test_rule_engine_session_isolation():
 
     assert engine.session_id == "my_session"
     assert engine.coverage_tracker.session_id == "my_session"
+
+def test_rule_coverage_with_slots():
+    """Test coverage calculation when contract has slots"""
+    from core.models import Slot, SlotType, SlotScope
+
+    contract = Contract(
+        database_name="test_db",
+        version="1.0",
+        core_slots=[
+            Slot(
+                slot_name="top_k",
+                description="top k parameter",
+                type=SlotType.INTEGER,
+                scope=SlotScope.COLLECTION,
+                depends_on=[]
+            )
+        ]
+    )
+
+    engine = RuleEngine(contract)
+
+    test_case = TestCase(
+        test_id="test_1",
+        operation="search",
+        slot_values={"top_k": 10},
+        raw_parameters={},
+        is_legal=True,
+        scope=SlotScope.COLLECTION
+    )
+
+    execution_context = ExecutionContext(
+        adapter=None,
+        profile=None,
+        state_model=None,
+        test_case=test_case
+    )
+
+    result = engine.evaluate_rules(test_case, execution_context)
+
+    # Verify coverage report has all fields populated
+    assert result.coverage_report.slot_coverage is not None
+    assert isinstance(result.coverage_report.slot_coverage, dict)
+    # top_k slot should be in slot_coverage
+    assert "top_k" in result.coverage_report.slot_coverage
+    # boundary_coverage should be 0.0 for Phase 1
+    assert result.coverage_report.boundary_coverage == 0.0
+    # Verify none_sources is populated (slots without rules contribute to None)
+    assert len(result.trace.none_sources) > 0
+    assert "slot:top_k" in result.trace.none_sources
+
+def test_rule_engine_empty_contract():
+    """Test RuleEngine with empty contract (no slots)"""
+    contract = Contract(
+        database_name="test_db",
+        version="1.0",
+        core_slots=[]
+    )
+
+    engine = RuleEngine(contract)
+
+    test_case = TestCase(
+        test_id="test_1",
+        operation="search",
+        slot_values={},
+        raw_parameters={},
+        is_legal=True,
+        scope=SlotScope.COLLECTION
+    )
+
+    execution_context = ExecutionContext(
+        adapter=None,
+        profile=None,
+        state_model=None,
+        test_case=test_case
+    )
+
+    result = engine.evaluate_rules(test_case, execution_context)
+
+    # Empty contract: no slots, no rules
+    assert result.overall_passed is None  # Three-valued logic: empty list -> None
+    assert len(result.results) == 0
+    # Coverage report should still be complete
+    assert result.coverage_report.slot_coverage == {}
+    assert result.coverage_report.boundary_coverage == 0.0
+    assert result.coverage_report.total_evaluations == 0
