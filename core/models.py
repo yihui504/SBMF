@@ -222,3 +222,15 @@ class GateResult:
     passed: bool
     reason: str
     coverage_report: Optional['CoverageReport'] = None
+
+
+@dataclass
+class TestExecutionResult:
+    """测试执行完整结果"""
+    status: ExecutionStatus
+    error: Optional[Exception]
+    result_data: Optional[Any]
+    elapsed_seconds: float
+    gate_result: Optional['GateResult'] = None
+    rule_evaluation_result: Optional['RuleEvaluationResult'] = None
+    bug_type_derivation: Optional['BugTypeDerivation'] = None
