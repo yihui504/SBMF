@@ -1,0 +1,16 @@
+# Undefined reference_slot in rule
+core_slots:
+  - slot_name: search_range
+    description: "Search range"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+    rules:
+      - rule_id: range_check
+        type: relational
+        severity: HIGH
+        enabled: true
+        relational:
+          operator: ">="
+          reference_slot: nonexistent_slot
+          error_message: "test"

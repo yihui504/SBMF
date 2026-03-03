@@ -10,12 +10,12 @@ class PreconditionGate:
     职责：
     - 消费 RuleEngine 评估结果
     - 检查 Profile skip 逻辑
-    - 检查 StateModel 状态机合法性（Phase 1 暂不实现）
+    - 检查 StateModel 状态机合法性
 
-    执行顺序：
+    执行顺序（STRICT）：
     1. RuleEngine 规则评估
     2. Profile skip 逻辑
-    3. StateModel 状态机合法性（Phase 1 暂不实现）
+    3. StateModel 状态机合法性（Phase 1.5 部分实现）
     """
 
     def __init__(self, rule_engine: RuleEngine, state_model: Optional['StateModel'] = None):
@@ -29,7 +29,7 @@ class PreconditionGate:
         self.state_model = state_model
 
     def check(self,
-              test_case: TestCase,
+              test_case: SemanticCase,
               adapter: Optional['BaseAdapter'],
               profile: Optional['BaseProfilePlugin'] = None) -> GateResult:
         """检查测试用例是否通过预条件
@@ -72,12 +72,15 @@ class PreconditionGate:
                     coverage_report=rule_result.coverage_report
                 )
 
-        # 3. StateModel 状态机合法性（Phase 1 暂不实现）
-        # TODO: Phase 2 实现 StateModel 集成
-        # if self.state_model:
-        #     state_result = self._check_state_machine_legality(test_case, adapter)
-        #     if not state_result.passed:
-        #         return GateResult(passed=False, reason=state_result.reason)
+        # 3. StateModel 状态机合法性检查
+        if self.state_model:
+            state_result = self._check_state_machine_legality(test_case, adapter)
+            if not state_result.passed:
+                return GateResult(
+                    passed=False,
+                    reason=state_result.reason,
+                    coverage_report=rule_result.coverage_report
+                )
 
         # 所有检查通过
         return GateResult(
@@ -85,3 +88,62 @@ class PreconditionGate:
             reason="all_checks_passed",
             coverage_report=rule_result.coverage_report
         )
+
+    def _check_state_machine_legality(self,
+                                      test_case: SemanticCase,
+                                      adapter: Optional['BaseAdapter']) -> 'GateResult':
+        """检查状态机合法性
+
+        Phase 1.5 实现说明：
+        - 尝试调用 StateModel.get_current_state()
+        - 如果 NotImplementedError（Phase 1），跳过状态检查
+        - Phase 2 将实现完整的状态机合法性检查
+
+        Args:
+            test_case: 测试用例
+            adapter: 数据库适配器
+
+        Returns:
+            GateResult: 状态机检查结果
+        """
+        from dataclasses import dataclass
+
+        @dataclass
+        class StateCheckResult:
+            passed: bool
+            reason: str
+
+        try:
+            # 尝试获取当前状态
+            current_state = self.state_model.get_current_state(
+                scope=test_case.scope,
+                name=self._extract_resource_name(test_case),
+                adapter=adapter
+            )
+
+            # Phase 2: 这里将实现实际的状态转移合法性检查
+            # Phase 1: get_current_state 抛出 NotImplementedError，所以不会到达这里
+            return StateCheckResult(
+                passed=True,
+                reason="state_check_not_implemented"
+            )
+
+        except NotImplementedError as e:
+            # Phase 1: StateModel 未实现，跳过检查
+            return StateCheckResult(
+                passed=True,
+                reason="state_check_skipped_not_implemented"
+            )
+
+    def _extract_resource_name(self, test_case: SemanticCase) -> str:
+        """从测试用例中提取资源名称
+
+        Args:
+            test_case: 测试用例
+
+        Returns:
+            str: 资源名称（例如：集合名）
+        """
+        # 简化实现：从 raw_parameters 中提取
+        # 实际实现可能需要更复杂的逻辑
+        return test_case.raw_parameters.get("collection_name", "unknown")

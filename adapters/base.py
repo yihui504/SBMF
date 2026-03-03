@@ -117,7 +117,7 @@ class BaseAdapter(ABC):
         pass
 
     @abstractmethod
-    def execute_test(self, test_case: TestCase) -> ExecutionResult:
+    def execute_test(self, test_case: SemanticCase) -> ExecutionResult:
         """执行测试用例
 
         Args:

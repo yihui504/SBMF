@@ -373,11 +373,11 @@ class TestDataclassModels:
         assert len(contract.core_slots) == 1
         assert contract.core_slots[0].slot_name == "dimension"
 
-    def test_testcase_dataclass(self):
-        """Test TestCase dataclass"""
-        from core.models import TestCase, SlotScope
+    def test_semantic_case_dataclass(self):
+        """Test SemanticCase dataclass"""
+        from core.models import SemanticCase, SlotScope
 
-        testcase = TestCase(
+        testcase = SemanticCase(
             test_id="test_001",
             operation="create_collection",
             slot_values={"dimension": 128, "metric_type": "L2"},

@@ -1,0 +1,8 @@
+# Undefined dependency reference
+core_slots:
+  - slot_name: top_k
+    description: "Top K"
+    type: integer
+    scope: COLLECTION
+    depends_on:
+      - nonexistent_slot

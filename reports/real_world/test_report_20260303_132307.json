@@ -1,0 +1,175 @@
+{
+  "summary": {
+    "total_oracles": 14,
+    "passed_count": 14,
+    "failed_count": 0,
+    "skipped_count": 0,
+    "pass_rate": 100.0,
+    "has_failures": false,
+    "summary_text": "All 14 Oracle checks passed"
+  },
+  "generated_at": "2026-03-03T13:23:07.830676",
+  "duration_seconds": 0.0,
+  "results": [
+    {
+      "oracle_id": "range_dimension",
+      "passed": true,
+      "details": "dimension=512 is within range [1, 32768]",
+      "violated_slots": null,
+      "evidence": null,
+      "location": null
+    },
+    {
+      "oracle_id": "enum_metric_type",
+      "passed": true,
+      "details": "metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])",
+      "violated_slots": null,
+      "evidence": {
+        "value": "L2",
+        "allowed_values": [
+          "L2",
+          "IP",
+          "COSINE"
+        ]
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "relational_search_range_top_k",
+      "passed": true,
+      "details": "search_range=100 >= top_k=10: passed",
+      "violated_slots": null,
+      "evidence": {
+        "left_value": 100,
+        "operator": ">=",
+        "right_value": 10
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "status_validation",
+      "passed": true,
+      "details": "Status is SUCCESS, expected SUCCESS: passed",
+      "violated_slots": null,
+      "evidence": {
+        "actual_status": "SUCCESS",
+        "expected_status": "SUCCESS"
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "range_dimension",
+      "passed": true,
+      "details": "dimension=1 is within range [1, 32768]",
+      "violated_slots": null,
+      "evidence": null,
+      "location": null
+    },
+    {
+      "oracle_id": "enum_metric_type",
+      "passed": true,
+      "details": "metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])",
+      "violated_slots": null,
+      "evidence": {
+        "value": "L2",
+        "allowed_values": [
+          "L2",
+          "IP",
+          "COSINE"
+        ]
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "status_validation",
+      "passed": true,
+      "details": "Status is SUCCESS, expected SUCCESS: passed",
+      "violated_slots": null,
+      "evidence": {
+        "actual_status": "SUCCESS",
+        "expected_status": "SUCCESS"
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "range_dimension",
+      "passed": true,
+      "details": "dimension=32768 is within range [1, 32768]",
+      "violated_slots": null,
+      "evidence": null,
+      "location": null
+    },
+    {
+      "oracle_id": "enum_metric_type",
+      "passed": true,
+      "details": "metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])",
+      "violated_slots": null,
+      "evidence": {
+        "value": "L2",
+        "allowed_values": [
+          "L2",
+          "IP",
+          "COSINE"
+        ]
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "status_validation",
+      "passed": true,
+      "details": "Status is SUCCESS, expected SUCCESS: passed",
+      "violated_slots": null,
+      "evidence": {
+        "actual_status": "SUCCESS",
+        "expected_status": "SUCCESS"
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "range_dimension",
+      "passed": true,
+      "details": "dimension=512 is within range [1, 32768]",
+      "violated_slots": null,
+      "evidence": null,
+      "location": null
+    },
+    {
+      "oracle_id": "enum_metric_type",
+      "passed": true,
+      "details": "metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])",
+      "violated_slots": null,
+      "evidence": {
+        "value": "L2",
+        "allowed_values": [
+          "L2",
+          "IP",
+          "COSINE"
+        ]
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "relational_search_range_top_k",
+      "passed": true,
+      "details": "search_range=5000 >= top_k=5000: passed",
+      "violated_slots": null,
+      "evidence": {
+        "left_value": 5000,
+        "operator": ">=",
+        "right_value": 5000
+      },
+      "location": null
+    },
+    {
+      "oracle_id": "status_validation",
+      "passed": true,
+      "details": "Status is SUCCESS, expected SUCCESS: passed",
+      "violated_slots": null,
+      "evidence": {
+        "actual_status": "SUCCESS",
+        "expected_status": "SUCCESS"
+      },
+      "location": null
+    }
+  ]
+}

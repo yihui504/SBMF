@@ -1,0 +1,7 @@
+# Empty slot_name
+core_slots:
+  - slot_name: ""
+    description: "Empty slot name"
+    type: integer
+    scope: COLLECTION
+    depends_on: []

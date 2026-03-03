@@ -1,0 +1,12 @@
+# Invalid rule type
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+    rules:
+      - rule_id: test_rule
+        type: invalid_type
+        severity: HIGH
+        enabled: true

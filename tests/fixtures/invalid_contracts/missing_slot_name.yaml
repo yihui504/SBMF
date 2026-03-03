@@ -1,0 +1,6 @@
+# Missing slot_name field
+core_slots:
+  - description: "No slot_name"
+    type: integer
+    scope: COLLECTION
+    depends_on: []

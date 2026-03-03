@@ -1,0 +1,71 @@
+============================================================
+ORACLE REPORT
+============================================================
+
+Summary:
+  All 14 Oracle checks passed
+
+Statistics:
+  Total Oracle checks: 14
+  Passed: 14
+  Failed: 0
+  Pass rate: 100.0%
+
+Detailed Results:
+------------------------------------------------------------
+
+[PASSED] range_dimension
+  Details: dimension=512 is within range [1, 32768]
+
+[PASSED] enum_metric_type
+  Details: metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])
+  Evidence: {'value': 'L2', 'allowed_values': ['L2', 'IP', 'COSINE']}
+
+[PASSED] relational_search_range_top_k
+  Details: search_range=100 >= top_k=10: passed
+  Evidence: {'left_value': 100, 'operator': '>=', 'right_value': 10}
+
+[PASSED] status_validation
+  Details: Status is SUCCESS, expected SUCCESS: passed
+  Evidence: {'actual_status': 'SUCCESS', 'expected_status': 'SUCCESS'}
+
+[PASSED] range_dimension
+  Details: dimension=1 is within range [1, 32768]
+
+[PASSED] enum_metric_type
+  Details: metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])
+  Evidence: {'value': 'L2', 'allowed_values': ['L2', 'IP', 'COSINE']}
+
+[PASSED] status_validation
+  Details: Status is SUCCESS, expected SUCCESS: passed
+  Evidence: {'actual_status': 'SUCCESS', 'expected_status': 'SUCCESS'}
+
+[PASSED] range_dimension
+  Details: dimension=32768 is within range [1, 32768]
+
+[PASSED] enum_metric_type
+  Details: metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])
+  Evidence: {'value': 'L2', 'allowed_values': ['L2', 'IP', 'COSINE']}
+
+[PASSED] status_validation
+  Details: Status is SUCCESS, expected SUCCESS: passed
+  Evidence: {'actual_status': 'SUCCESS', 'expected_status': 'SUCCESS'}
+
+[PASSED] range_dimension
+  Details: dimension=512 is within range [1, 32768]
+
+[PASSED] enum_metric_type
+  Details: metric_type=L2 is allowed (expected: ['L2', 'IP', 'COSINE'])
+  Evidence: {'value': 'L2', 'allowed_values': ['L2', 'IP', 'COSINE']}
+
+[PASSED] relational_search_range_top_k
+  Details: search_range=5000 >= top_k=5000: passed
+  Evidence: {'left_value': 5000, 'operator': '>=', 'right_value': 5000}
+
+[PASSED] status_validation
+  Details: Status is SUCCESS, expected SUCCESS: passed
+  Evidence: {'actual_status': 'SUCCESS', 'expected_status': 'SUCCESS'}
+
+------------------------------------------------------------
+Generated: 2026-03-03 13:11:17
+Duration: 0.00s

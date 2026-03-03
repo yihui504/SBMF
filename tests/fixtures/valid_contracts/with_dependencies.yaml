@@ -1,0 +1,20 @@
+# Slot with dependencies (string format)
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+  - slot_name: search_range
+    description: "Search range"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+  - slot_name: top_k
+    description: "Top K results"
+    type: integer
+    scope: COLLECTION
+    depends_on:
+      - dimension
+      - slot_name: search_range
+        reason: "top_k depends on search_range"

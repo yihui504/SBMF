@@ -1,0 +1,7 @@
+# Invalid scope value
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: INVALID_SCOPE
+    depends_on: []

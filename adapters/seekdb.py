@@ -73,7 +73,7 @@ class SeekDBAdapter(BaseAdapter):
         """检查连接状态"""
         return self._connected
 
-    def execute_test(self, test_case: TestCase) -> ExecutionResult:
+    def execute_test(self, test_case: SemanticCase) -> ExecutionResult:
         """执行测试用例"""
         start_time = time.time()
 
@@ -81,6 +81,38 @@ class SeekDBAdapter(BaseAdapter):
             # 根据操作类型执行
             if test_case.operation == "search":
                 result = self._execute_search(test_case)
+                return ExecutionResult(
+                    status=ExecutionStatus.SUCCESS,
+                    result_data=result,
+                    error=None,
+                    elapsed_seconds=time.time() - start_time
+                )
+            elif test_case.operation == "insert":
+                result = self._execute_insert(test_case)
+                return ExecutionResult(
+                    status=ExecutionStatus.SUCCESS,
+                    result_data=result,
+                    error=None,
+                    elapsed_seconds=time.time() - start_time
+                )
+            elif test_case.operation == "delete":
+                result = self._execute_delete(test_case)
+                return ExecutionResult(
+                    status=ExecutionStatus.SUCCESS,
+                    result_data=result,
+                    error=None,
+                    elapsed_seconds=time.time() - start_time
+                )
+            elif test_case.operation == "create_collection":
+                result = self._execute_create_collection(test_case)
+                return ExecutionResult(
+                    status=ExecutionStatus.SUCCESS,
+                    result_data=result,
+                    error=None,
+                    elapsed_seconds=time.time() - start_time
+                )
+            elif test_case.operation == "drop_collection":
+                result = self._execute_drop_collection(test_case)
                 return ExecutionResult(
                     status=ExecutionStatus.SUCCESS,
                     result_data=result,
@@ -102,7 +134,7 @@ class SeekDBAdapter(BaseAdapter):
                 elapsed_seconds=time.time() - start_time
             )
 
-    def _execute_search(self, test_case: TestCase) -> Dict[str, Any]:
+    def _execute_search(self, test_case: SemanticCase) -> Dict[str, Any]:
         """执行搜索操作（简化版）"""
         # 构建参数
         params = {}
@@ -115,6 +147,61 @@ class SeekDBAdapter(BaseAdapter):
             "ids": [1, 2, 3],
             "scores": [0.1, 0.2, 0.3],
             "total": 3
+        }
+
+    def _execute_insert(self, test_case: SemanticCase) -> Dict[str, Any]:
+        """执行插入操作（简化版）"""
+        # 构建参数
+        params = {}
+        for slot_name, slot_value in test_case.slot_values.items():
+            param_name = self.map_slot_to_param(slot_name)
+            params[param_name] = self.transform_value(slot_name, slot_value)
+
+        # 返回模拟的插入结果
+        return {
+            "inserted_count": 1,
+            "ids": [f"vec_{int(time.time() * 1000)}"]
+        }
+
+    def _execute_delete(self, test_case: SemanticCase) -> Dict[str, Any]:
+        """执行删除操作（简化版）"""
+        # 构建参数
+        params = {}
+        for slot_name, slot_value in test_case.slot_values.items():
+            param_name = self.map_slot_to_param(slot_name)
+            params[param_name] = self.transform_value(slot_name, slot_value)
+
+        # 返回模拟的删除结果
+        return {
+            "deleted_count": 1
+        }
+
+    def _execute_create_collection(self, test_case: SemanticCase) -> Dict[str, Any]:
+        """执行创建集合操作（简化版）"""
+        # 构建参数
+        params = {}
+        for slot_name, slot_value in test_case.slot_values.items():
+            param_name = self.map_slot_to_param(slot_name)
+            params[param_name] = self.transform_value(slot_name, slot_value)
+
+        # 返回模拟的创建结果
+        return {
+            "collection_name": params.get("collection_name", "test_collection"),
+            "created": True
+        }
+
+    def _execute_drop_collection(self, test_case: SemanticCase) -> Dict[str, Any]:
+        """执行删除集合操作（简化版）"""
+        # 构建参数
+        params = {}
+        for slot_name, slot_value in test_case.slot_values.items():
+            param_name = self.map_slot_to_param(slot_name)
+            params[param_name] = self.transform_value(slot_name, slot_value)
+
+        # 返回模拟的删除结果
+        return {
+            "collection_name": params.get("collection_name", "test_collection"),
+            "dropped": True
         }
 
     def _classify_exception(self, error: Exception) -> ExecutionStatus:

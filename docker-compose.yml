@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  seekdb:
+    image: seekdb/seekdb:latest
+    container_name: seekdb_test
+    ports:
+      - "2881:2881"
+      - "9090:9090"
+    environment:
+      - SEEKDB_MODE=single
+    volumes:
+      - seekdb_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  seekdb_data:

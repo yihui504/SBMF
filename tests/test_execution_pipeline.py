@@ -19,7 +19,7 @@ def test_execution_pipeline_precondition_failed():
 
     pipeline = ExecutionPipeline(rule_engine=rule_engine, precondition_gate=precondition_gate)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_1",
         operation="search",
         slot_values={},
@@ -55,7 +55,7 @@ def test_execution_pipeline_full_flow():
 
     pipeline = ExecutionPipeline(rule_engine=rule_engine, precondition_gate=precondition_gate)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_2",
         operation="search",
         slot_values={"top_k": 10},
@@ -95,7 +95,7 @@ def test_execution_pipeline_bug_type_derivation():
     pipeline = ExecutionPipeline(rule_engine=rule_engine, precondition_gate=precondition_gate)
 
     # Illegal test that succeeds (TYPE_1)
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_3",
         operation="search",
         slot_values={"top_k": 10},  # Valid value but test is illegal

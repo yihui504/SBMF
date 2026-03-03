@@ -1,0 +1,3 @@
+# Slot is not a dict
+core_slots:
+  - "just a string"

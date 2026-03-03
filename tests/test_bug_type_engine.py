@@ -4,7 +4,7 @@ from core.models import *
 from core.bug_type_engine import BugTypeEngine
 
 def test_derive_type_1_illegal_success():
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_1",
         operation="insert",
         slot_values={"dimension": 0},
@@ -31,7 +31,7 @@ def test_derive_type_1_illegal_success():
     assert "非法操作未报错" in derivation.reason
 
 def test_derive_type_2_bad_diagnostics():
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_2",
         operation="insert",
         slot_values={"dimension": 999999},
@@ -57,7 +57,7 @@ def test_derive_type_2_bad_diagnostics():
     assert derivation.bug_type == BugType.TYPE_2
 
 def test_derive_type_3_legal_failure():
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_3",
         operation="search",
         slot_values={"top_k": 10},
@@ -89,7 +89,7 @@ def test_derive_type_4_semantic_violation():
     class MockRuleEvaluationResult:
         overall_passed: bool = False
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_4",
         operation="search",
         slot_values={"top_k": 10},
@@ -116,7 +116,7 @@ def test_derive_type_4_semantic_violation():
     assert derivation.bug_type == BugType.TYPE_4
 
 def test_derive_not_a_bug():
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_5",
         operation="insert",
         slot_values={"dimension": 0},
@@ -143,7 +143,7 @@ def test_derive_not_a_bug():
     assert "预期行为" in derivation.reason
 
 def test_derive_precondition_failed():
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_6",
         operation="search",
         slot_values={"top_k": 10},
@@ -170,7 +170,7 @@ def test_derive_precondition_failed():
     assert "预条件" in derivation.reason
 
 def test_derive_timeout():
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_7",
         operation="search",
         slot_values={"top_k": 10},

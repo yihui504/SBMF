@@ -1,7 +1,7 @@
 # tests/test_seekdb_adapter.py
 import pytest
 from adapters.seekdb import SeekDBAdapter
-from core.models import ErrorCategory, TestCase, SlotScope, ExecutionStatus
+from core.models import ErrorCategory, SemanticCase, SlotScope, ExecutionStatus
 
 def test_seekdb_adapter_capabilities():
     adapter = SeekDBAdapter(host="localhost", port=2881)
@@ -49,7 +49,7 @@ def test_seekdb_disconnect():
 def test_seekdb_execute_test_search():
     adapter = SeekDBAdapter(host="localhost", port=2881)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_1",
         operation="search",
         slot_values={"top_k": 10, "search_range": 100},

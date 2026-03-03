@@ -1,0 +1,41 @@
+============================================================
+ORACLE REPORT
+============================================================
+
+Summary:
+  6/7 Oracle checks passed, 1 failed, (Failed: relational)
+
+Statistics:
+  Total Oracle checks: 7
+  Passed: 6
+  Failed: 1
+  Pass rate: 85.7%
+
+Detailed Results:
+------------------------------------------------------------
+
+[PASSED] dimension
+  Details: Dimension 512 OK
+
+[PASSED] metric_type
+  Details: Metric L2 OK
+
+[PASSED] relational
+  Details: 100 >= 10 OK
+
+[PASSED] dimension
+  Details: Dimension 512 OK
+
+[FAILED] relational
+  Details: search_range (50) < top_k (100)
+  Violated slots: search_range
+
+[PASSED] dimension
+  Details: Dimension 1024 OK
+
+[PASSED] metric_type
+  Details: Metric IP OK
+
+------------------------------------------------------------
+Generated: 2026-03-03 15:38:02
+Duration: 0.00s

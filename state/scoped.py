@@ -74,13 +74,15 @@ class ScopedStateModel(StateModel):
                          adapter: Optional['BaseAdapter']) -> str:
         """获取指定粒度的当前状态
 
-        Phase 1: 简化实现，返回默认状态
+        Phase 1: 未实现，明确抛出 NotImplementedError
         Phase 2: 将查询数据库获取实际状态
         """
-        # Phase 1: 简化实现
-        if scope == SlotScope.COLLECTION:
-            return "not_exist"
-        return "unknown"
+        # Phase 1: 未实现状态查询 - 不应静默返回默认值
+        raise NotImplementedError(
+            f"StateModel.get_current_state() is not yet implemented. "
+            f"Actual state querying from database will be implemented in Phase 2. "
+            f"Requested: scope={scope.value}, name={name}"
+        )
 
     def is_transition_legal(self,
                            scope: SlotScope,

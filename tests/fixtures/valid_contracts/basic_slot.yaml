@@ -1,0 +1,7 @@
+# Basic slot definition
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []

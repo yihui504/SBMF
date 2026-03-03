@@ -1,0 +1,15 @@
+# Missing rule_id
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+    rules:
+      - type: relational
+        severity: HIGH
+        enabled: true
+        relational:
+          operator: ">="
+          reference_slot: top_k
+          error_message: "test"

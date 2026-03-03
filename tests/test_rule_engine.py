@@ -13,7 +13,7 @@ def test_rule_engine_evaluate_all_passed():
 
     engine = RuleEngine(contract)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_1",
         operation="search",
         slot_values={"top_k": 10},
@@ -46,7 +46,7 @@ def test_rule_engine_trace():
 
     engine = RuleEngine(contract)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test",
         operation="search",
         slot_values={},
@@ -136,7 +136,7 @@ def test_rule_coverage_with_slots():
 
     engine = RuleEngine(contract)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_1",
         operation="search",
         slot_values={"top_k": 10},
@@ -175,7 +175,7 @@ def test_rule_engine_empty_contract():
 
     engine = RuleEngine(contract)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_1",
         operation="search",
         slot_values={},

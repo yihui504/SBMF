@@ -193,8 +193,11 @@ class Contract:
 
 
 @dataclass
-class TestCase:
-    """测试用例"""
+class SemanticCase:
+    """语义测试用例
+
+    命名说明：避免与 pytest 的 TestCase 类冲突，命名为 SemanticCase。
+    """
     test_id: str
     operation: str
     slot_values: Dict[str, Any]
@@ -225,8 +228,12 @@ class GateResult:
 
 
 @dataclass
-class TestExecutionResult:
-    """测试执行完整结果"""
+class FullExecutionResult:
+    """测试执行完整结果
+
+    命名说明：避免与 pytest 的 Test* 类冲突，命名为 FullExecutionResult。
+    包含门控结果、规则评估、Bug 类型推导等完整信息。
+    """
     status: ExecutionStatus
     error: Optional[Exception]
     result_data: Optional[Any]
@@ -234,3 +241,4 @@ class TestExecutionResult:
     gate_result: Optional['GateResult'] = None
     rule_evaluation_result: Optional['RuleEvaluationResult'] = None
     bug_type_derivation: Optional['BugTypeDerivation'] = None
+    oracle_results: List['OracleResult'] = field(default_factory=list)

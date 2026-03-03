@@ -1,0 +1,3 @@
+# Missing core_slots field
+database_name: test_db
+version: "1.0"

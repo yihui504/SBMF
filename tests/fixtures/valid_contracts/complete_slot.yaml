@@ -1,0 +1,23 @@
+# Complete slot definition with constraints and rules
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+    constraints:
+      range:
+        min: 1
+        max: 32768
+        inclusive: true
+    rules:
+      - rule_id: dim_range_check
+        type: range
+        severity: HIGH
+        enabled: true
+        priority: 10
+        range:
+          min_value: 1
+          max_value: 32768
+          inclusive_min: true
+          inclusive_max: true

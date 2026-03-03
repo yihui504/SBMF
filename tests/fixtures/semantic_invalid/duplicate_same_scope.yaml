@@ -1,0 +1,12 @@
+# Duplicate slot in same scope
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+  - slot_name: dimension
+    description: "Duplicate dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []

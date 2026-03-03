@@ -6,6 +6,7 @@ from .bug_type_engine import BugTypeEngine
 from .rule_engine import RuleEngine
 from .precondition_gate import PreconditionGate
 from .execution_pipeline import ExecutionPipeline
+from .oracle_reporter import ReportFormat, OracleReport, OracleReporter
 
 __all__ = [
     "ThreeValuedLogic",
@@ -13,4 +14,7 @@ __all__ = [
     "RuleEngine",
     "PreconditionGate",
     "ExecutionPipeline",
+    "ReportFormat",
+    "OracleReport",
+    "OracleReporter",
 ]

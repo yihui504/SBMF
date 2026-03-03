@@ -1,0 +1,9 @@
+# Basic valid contract
+database_name: test_db
+version: "1.0"
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: []

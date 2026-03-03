@@ -12,7 +12,7 @@ class ExecutionContext:
     adapter: Optional['BaseAdapter']
     profile: Optional['BaseProfilePlugin']
     state_model: Optional['StateModel']
-    test_case: TestCase
+    test_case: SemanticCase
 
 
 @dataclass
@@ -151,7 +151,7 @@ class RuleEngine:
         self.session_id = self.coverage_tracker.session_id
 
     def evaluate_rules(self,
-                       test_case: TestCase,
+                       test_case: SemanticCase,
                        execution_context: ExecutionContext) -> RuleEvaluationResult:
         """评估所有规则
 

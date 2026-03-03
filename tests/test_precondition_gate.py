@@ -15,7 +15,7 @@ def test_precondition_gate_all_passed():
     rule_engine = RuleEngine(contract)
     gate = PreconditionGate(rule_engine=rule_engine, state_model=None)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_1",
         operation="search",
         slot_values={"top_k": 10},
@@ -42,7 +42,7 @@ def test_precondition_gate_with_profile_skip():
     rule_engine = RuleEngine(contract)
     gate = PreconditionGate(rule_engine=rule_engine, state_model=None)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_2",
         operation="search",
         slot_values={"top_k": 10},
@@ -72,7 +72,7 @@ def test_precondition_gate_no_profile():
     rule_engine = RuleEngine(contract)
     gate = PreconditionGate(rule_engine=rule_engine, state_model=None)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_3",
         operation="search",
         slot_values={"top_k": 10},
@@ -97,7 +97,7 @@ def test_precondition_gate_with_coverage_report():
     rule_engine = RuleEngine(contract)
     gate = PreconditionGate(rule_engine=rule_engine, state_model=None)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_4",
         operation="search",
         slot_values={},
@@ -137,7 +137,7 @@ def test_precondition_gate_rule_violation():
     rule_engine = RuleEngine(contract)
     gate = PreconditionGate(rule_engine=rule_engine, state_model=None)
 
-    test_case = TestCase(
+    test_case = SemanticCase(
         test_id="test_violation",
         operation="search",
         slot_values={"top_k": 10},

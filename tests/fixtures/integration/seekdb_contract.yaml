@@ -1,0 +1,187 @@
+# SeekDB Contract - 完整的语义契约定义
+# Version: 1.0
+# 适用于 SeekDB 向量数据库的语义验证规则
+
+database_name: seekdb_vector_db
+version: "1.0"
+
+core_slots:
+  # ================================================================
+  # DATABASE Level Slots
+  # ================================================================
+
+  - slot_name: database_name
+    description: "数据库名称"
+    type: string
+    scope: DATABASE
+    depends_on: []
+    constraints:
+      enum:
+        values: ["default_db", "vector_db", "semantic_db"]
+        strict: true
+    rules:
+      - rule_id: db_name_pattern
+        type: enum
+        severity: MEDIUM
+        enabled: true
+        priority: 10
+        enum:
+          allowed_values: ["default_db", "vector_db", "semantic_db"]
+          strict: true
+
+  # ================================================================
+  # COLLECTION Level Slots
+  # ================================================================
+
+  - slot_name: dimension
+    description: "向量维度"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+    constraints:
+      range:
+        min: 1
+        max: 32768
+        inclusive: true
+    rules:
+      - rule_id: dim_power_of_2
+        type: range
+        severity: HIGH
+        enabled: true
+        priority: 10
+        range:
+          min_value: 1
+          max_value: 32768
+          inclusive_min: true
+          inclusive_max: true
+      - rule_id: dim_common_values
+        type: enum
+        severity: LOW
+        enabled: true
+        priority: 20
+        enum:
+          allowed_values: [128, 256, 512, 1024, 2048, 4096, 8192, 16384]
+          strict: false
+
+  - slot_name: metric_type
+    description: "距离度量类型"
+    type: enum
+    scope: COLLECTION
+    depends_on: []
+    constraints:
+      enum:
+        values: ["L2", "IP", "COSINE"]
+        strict: true
+    rules:
+      - rule_id: metric_validation
+        type: enum
+        severity: HIGH
+        enabled: true
+        priority: 10
+        enum:
+          allowed_values: ["L2", "IP", "COSINE"]
+          strict: true
+
+  - slot_name: top_k
+    description: "Top K 结果数"
+    type: integer
+    scope: COLLECTION
+    depends_on:
+      - slot_name: dimension
+        reason: "top_k 不应超过向量数量"
+    constraints:
+      range:
+        min: 1
+        max: 10000
+        inclusive: true
+    rules:
+      - rule_id: top_k_range_check
+        type: range
+        severity: HIGH
+        enabled: true
+        priority: 10
+        range:
+          min_value: 1
+          max_value: 10000
+          inclusive_min: true
+          inclusive_max: true
+      - rule_id: top_k_dimension_ratio
+        type: relational
+        severity: MEDIUM
+        enabled: true
+        priority: 20
+        relational:
+          operator: "<="
+          reference_slot: dimension
+          error_message: "top_k should not exceed dimension"
+
+  - slot_name: search_range
+    description: "搜索范围参数"
+    type: integer
+    scope: COLLECTION
+    depends_on:
+      - slot_name: top_k
+        reason: "search_range 应大于等于 top_k"
+    rules:
+      - rule_id: search_range_top_k_constraint
+        type: relational
+        severity: HIGH
+        enabled: true
+        priority: 10
+        relational:
+          operator: ">="
+          reference_slot: top_k
+          error_message: "search_range must be >= top_k"
+
+  # ================================================================
+  # INDEX Level Slots
+  # ================================================================
+
+  - slot_name: index_type
+    description: "索引类型"
+    type: enum
+    scope: INDEX
+    depends_on: []
+    constraints:
+      enum:
+        values: ["HNSW", "IVF", "FLAT"]
+        strict: true
+    rules:
+      - rule_id: index_type_validation
+        type: enum
+        severity: HIGH
+        enabled: true
+        priority: 10
+        enum:
+          allowed_values: ["HNSW", "IVF", "FLAT"]
+          strict: true
+
+  - slot_name: hnsw_m
+    description: "HNSW 图的连接数"
+    type: integer
+    scope: INDEX
+    depends_on: []
+    constraints:
+      range:
+        min: 2
+        max: 128
+        inclusive: true
+    rules:
+      - rule_id: hnsw_m_range
+        type: range
+        severity: HIGH
+        enabled: true
+        priority: 10
+        range:
+          min_value: 2
+          max_value: 128
+          inclusive_min: true
+          inclusive_max: true
+      - rule_id: hnsw_m_power_of_2
+        type: enum
+        severity: LOW
+        enabled: true
+        priority: 20
+        enum:
+          allowed_values: [2, 4, 8, 16, 32, 64, 128]
+          strict: false

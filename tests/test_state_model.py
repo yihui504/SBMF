@@ -35,11 +35,12 @@ def test_state_model_is_transition_legal():
     assert model.is_transition_legal(SlotScope.COLLECTION, "not_exist", "has_data") is False
 
 def test_state_model_get_current_state():
-    """Test StateModel returns current state (simplified for Phase 1)"""
+    """Test StateModel.get_current_state raises NotImplementedError (Phase 1)"""
     model = ScopedStateModel()
 
-    state = model.get_current_state(SlotScope.COLLECTION, "test_collection", adapter=None)
-    assert state == "not_exist"  # Simplified implementation
+    # Phase 1: get_current_state is not implemented - should raise explicitly
+    with pytest.raises(NotImplementedError, match="not yet implemented"):
+        model.get_current_state(SlotScope.COLLECTION, "test_collection", adapter=None)
 
 def test_state_identifier():
     """Test StateIdentifier dataclass"""

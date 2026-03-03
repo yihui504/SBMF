@@ -1,0 +1,22 @@
+# Slot with relational rule
+core_slots:
+  - slot_name: top_k
+    description: "Top K results"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+  - slot_name: search_range
+    description: "Search range parameter"
+    type: integer
+    scope: COLLECTION
+    depends_on: []
+    rules:
+      - rule_id: search_range_top_k_constraint
+        type: relational
+        severity: HIGH
+        enabled: true
+        priority: 10
+        relational:
+          operator: ">="
+          reference_slot: top_k
+          error_message: "search_range must be >= top_k"

@@ -1,0 +1,7 @@
+# depends_on is not a list
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: integer
+    scope: COLLECTION
+    depends_on: "not a list"

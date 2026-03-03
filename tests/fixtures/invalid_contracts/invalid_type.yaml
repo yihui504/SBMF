@@ -1,0 +1,7 @@
+# Invalid type value
+core_slots:
+  - slot_name: dimension
+    description: "Vector dimension"
+    type: invalid_type
+    scope: COLLECTION
+    depends_on: []
